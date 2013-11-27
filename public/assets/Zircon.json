@@ -1,0 +1,27 @@
+{
+  "name": "Zircon",
+  "title": "Zircon",
+  "description": "CMS made ​​from developer to developer.",
+  "version": "1.0",
+  "homepage": "https://github.com/rbarros/zircon",
+  "author": {
+    "name": "Ramon Barros",
+    "email": "contato@ramon-barros.com",
+    "url": "ramon-barros.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rbarros/zircon"
+  },
+  "bugs": "https://github.com/rbarros/zircon/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rbarros/zircon/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": []
+}

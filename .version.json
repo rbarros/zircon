@@ -1,0 +1,14 @@
+{
+    "name": "Zircon",
+    "version":"1.0",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "minimum-stability": "alpha",
+    "authors":[
+        {
+            "name":"Ramon Barros",
+            "email": "contato@ramon-barros.com"
+        }
+    ]
+}
