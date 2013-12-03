@@ -1,0 +1,94 @@
+# ---------------------------------------------------------------------------
+# Modo de debug
+# ---------------------------------------------------------------------------
+#
+# Quando o aplicativo está em modo de depuração, mensagens de erro detalhadas 
+# são mostradas.
+# 
+debug: true
+
+#--------------------------------------------------------------------------
+# URL da Aplicação
+#--------------------------------------------------------------------------
+#
+# Esta URL é utilizada para carregamento dos assets.
+# 
+asset_url : "http://localhost/zircon/public/"
+
+#--------------------------------------------------------------------------
+# Fuso horário da aplicação
+#--------------------------------------------------------------------------
+#
+# Você pode especificar o fuso horário padrão para sua aplicação
+# 
+timezone : "America/Sao_Paulo"
+
+#--------------------------------------------------------------------------
+# Configuração de idioma da aplicação
+#--------------------------------------------------------------------------
+#
+# Aqui você define o idioma que será retornado nas mensagens da API.
+# 
+locale : "pt"
+
+#--------------------------------------------------------------------------
+# Chave de criptografia
+#--------------------------------------------------------------------------
+#
+# Certifique-se de alterar essa chave antes de implantar a sua aplicação, porque
+# é usado pelo encriptador serviço
+# 
+key : "SecretKey32"
+
+#--------------------------------------------------------------------------
+# Serviços adicionais
+#--------------------------------------------------------------------------
+#
+# Você pode adicionar os serviços das classes Illuminate para utilizar novos recursos
+# ou também cria-los. Estes serviços serão carregados automaticamente.
+# 'Profiler\ProfilerServiceProvider'
+providers : 
+ - 'Illuminate\Filesystem\FilesystemServiceProvider'
+ - 'Illuminate\Database\DatabaseServiceProvider'
+ - 'Illuminate\Cache\CacheServiceProvider'
+ - 'Illuminate\Encryption\EncryptionServiceProvider'
+ #- 'Illuminate\Redis\RedisServiceProvider'
+ - 'Illuminate\Log\LogServiceProvider'
+ #- 'Cartalyst\Sentry\SentryServiceProvider'
+
+#--------------------------------------------------------------------------
+# Class Aliases
+#--------------------------------------------------------------------------
+#
+# Quando o aplicativo é iniciado efetua o carregamento dos aliases "apelidos"
+# facilitando a declaração do mesmo. No entanto, tome cuidado, pois ele
+# pode prejudicar o desempenho.
+# 
+aliases : 
+ 'App' : 'Illuminate\Support\Facades\App'
+ 'DB' : 'Illuminate\Support\Facades\DB'
+ 'Cache' : 'Illuminate\Support\Facades\Cache'
+ 'Config' : 'Illuminate\Support\Facades\Config'
+ 'Crypt' : 'Illuminate\Support\Facades\Crypt'
+ 'Eloquent' : 'Illuminate\Database\Eloquent\Model'
+ 'Event' : 'Illuminate\Support\Facades\Event'
+ 'Lang' : 'Illuminate\Support\Facades\Lang'
+ 'Log' : 'Illuminate\Support\Facades\Log'
+ 'Profiler' : 'Profiler\Facades\Profiler'
+ #'Redis' : 'Illuminate\Support\Facades\Redis'
+ #'RestException' : 'Luracast\Restler\RestException'
+ #'Sentry' : 'Cartalyst\Sentry\Facades\Laravel\Sentry'
+
+#--------------------------------------------------------------------------
+# Class da API.
+#--------------------------------------------------------------------------
+# 
+# Controllers que serão carregadas no Restler.
+# 
+api : 
+ #- Customers
+ #- Login
+ #- Departments
+ #- Occupations
+ #- Users
+ #- Dashboard

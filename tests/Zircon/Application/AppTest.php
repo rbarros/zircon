@@ -30,18 +30,23 @@ class AppTest extends AbstractTest
     /**
      * @depends testInstantiationWithoutArgumentsShouldWork
      */
-    public function testSetInstanceKeyWithValidDataShouldWork()
+    public function testGetInstanceKeyWithValidDataShouldWork()
+    {
+        $this->assertEquals(1, App::VERSION, 'Attribute was not correctly set');
+        $this->assertEquals('Zircon API', App::APPNAME, 'Attribute was not correctly set');
+        $this->assertEquals('v1.0.0', App::APPVERSION, 'Attribute was not correctly set');
+        $this->assertEquals($this->instance, new App, 'Attribute was not correctly set');
+    }
+
+    /**
+     * @depends testInstantiationWithoutArgumentsShouldWork
+     */
+    public function testGetInstanceConfigWithValidDataShouldWork()
     {
         $config = new Repository($this->instance->getConfigLoader(), 'development');
-       $comp = array(
-             'app' => $this->instance
-            ,'config' => $config
-            ,'request' => Request::createFromGlobals()
-            ,'path' => false
-            ,'path.base' => '/'
-            ,'path.public' => false
-            ,'path.storage' => false
-        );
-       $this->assertAttributeEquals($comp, 'instances', $this->instance, 'Attribute was not correctly set');
+        $this->assertEquals($this->instance['path'], realpath($config->get('path.app')), 'Attribute was not correctly set');
+        $this->assertEquals($this->instance['path.base'], realpath($config->get('path.base')), 'Attribute was not correctly set');
+        $this->assertEquals($this->instance['path.public'], realpath($config->get('path.public')), 'Attribute was not correctly set');
+        $this->assertEquals($this->instance['path.storage'], realpath($config->get('path.storage')), 'Attribute was not correctly set');
     }
 }

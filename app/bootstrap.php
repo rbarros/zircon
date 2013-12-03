@@ -75,7 +75,11 @@ Illuminate\Support\ClassLoader::register();
  */
 $app = new Zircon\Application\App();
 
+$app->detectEnvironment(array(
+  'local' => array('http://localhost*', '*.dev')
+));
+
 /**
  * Executa configurações do restler.
  */
-$app->run();
+//$app->run();

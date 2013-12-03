@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  * @author Ramon Barros <contato@ramon-barros.com>
  *
  */
-class App extends Container {
+class App extends Container implements HttpKernelInterface, ResponsePreparerInterface {
 
   /**
    * A versão da API.
@@ -147,25 +147,21 @@ class App extends Container {
      * Registra os provedores de serviços das classes Exception e Event
      * para não ser necessário/subtituido no arquivo app/config/app.yml
      */
-    //$this->register(new ExceptionServiceProvider($this));
+    $this->register(new ExceptionServiceProvider($this));
 
-    //$this->register(new RoutingServiceProvider($this));
+    $this->register(new RoutingServiceProvider($this));
 
-    //$this->register(new EventServiceProvider($this));
+    $this->register(new EventServiceProvider($this));
 
-    $this->detectEnvironment(array(
-      'local' => array('your-machine-name'),
-    ));
-    
     /**
      * Efetua o carregamento dos provedores de serviços "Facade"
      */
-    //$this->providersBoot();
+    $this->providersBoot();
 
     /**
      * Efetua o carregamento das aliases
      */
-    //$this->aliasLoader();
+    $this->aliasLoader();
   }
 
   /**
@@ -202,8 +198,6 @@ class App extends Container {
 
     foreach (array_except($paths, array('app')) as $key => $value)
     {
-      var_dump($key);
-      var_dump(realpath($value));
       $this->instance("path.{$key}", realpath($value));
     }
   }
@@ -384,6 +378,103 @@ class App extends Container {
    */
   public function aliasLoader(){
     AliasLoader::getInstance($this['config']->get('app.aliases'))->register(); 
+  }
+
+  /**
+   * Manuseia o pedido de requisição e obtem a resposta.
+   *
+   * Oferece compatibilidade com testes funcionais BrowserKit.
+   *
+   * @implements HttpKernelInterface::handle
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int   $type
+   * @param  bool  $catch
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+  {
+    $this->instance('request', $request);
+
+    Facade::clearResolvedInstance('request');
+
+    return $this->dispatch($request);
+  }
+
+  /**
+   * Manuseia a requisição e obtem a resposta.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function dispatch(Request $request)
+  {
+    if ($this->isDownForMaintenance())
+    {
+      $response = $this['events']->until('illuminate.app.down');
+
+      return $this->prepareResponse($response, $request);
+    }
+    else
+    {
+      return $this['router']->dispatch($this->prepareRequest($request));
+    }
+  }
+
+  /**
+   * Prepare the given value as a Response object.
+   *
+   * @param  mixed  $value
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function prepareResponse($value)
+  {
+    if ( ! $value instanceof SymfonyResponse) $value = new Response($value);
+
+    return $value->prepare($this['request']);
+  }
+
+  /**
+   * Set the application's deferred services.
+   *
+   * @param  array  $services
+   * @return void
+   */
+  public function setDeferredServices(array $services)
+  {
+    $this->deferredServices = $services;
+  }
+
+  /**
+   * Get the service providers that have been loaded.
+   *
+   * @return array
+   */
+  public function getLoadedProviders()
+  {
+    return $this->loadedProviders;
+  }
+
+  /**
+   * Register an application error handler.
+   *
+   * @param  \Closure  $callback
+   * @return void
+   */
+  public function error(Closure $callback)
+  {
+    $this['exception']->error($callback);
+  }
+
+  /**
+   * Register an "after" application filter.
+   *
+   * @param  Closure|string  $callback
+   * @return void
+   */
+  public function after($callback)
+  {
+    return $this['router']->after($callback);
   }
 
   /**

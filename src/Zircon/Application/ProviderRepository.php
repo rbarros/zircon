@@ -42,12 +42,12 @@ class ProviderRepository {
     /**
      * Register the application service providers.
      *
-     * @param  \\Foundation\Application  $app
+     * @param  \Zircon\Application\App  $app
      * @param  array  $providers
      * @param  string  $path
      * @return void
      */
-    public function load(Application $app, array $providers)
+    public function load(App $app, array $providers)
     {
         $manifest = $this->loadManifest();
 
@@ -73,11 +73,11 @@ class ProviderRepository {
     /**
      * Compile the application manifest file.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Zircon\Application\App  $app
      * @param  array  $providers
      * @return array
      */
-    protected function compileManifest(Application $app, $providers)
+    protected function compileManifest(App $app, $providers)
     {
         // The service manifest should contain a list of all of the providers for
         // the application so we can compare it on each request to the service
@@ -114,11 +114,11 @@ class ProviderRepository {
     /**
      * Create a new provider instance.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Zircon\Application\App  $app
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function createProvider(Application $app, $provider)
+    public function createProvider(App $app, $provider)
     {
         return new $provider($app);
     }
@@ -171,7 +171,7 @@ class ProviderRepository {
     /**
      * Get the manifest file path.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Zircon\Application\App  $app
      * @return string
      */
     protected function getManifestPath($app)
