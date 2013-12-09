@@ -79,7 +79,30 @@ $app->detectEnvironment(array(
   'local' => array('http://localhost*', '*.dev')
 ));
 
+use Luracast\Restler\Restler;
+use Luracast\Restler\Defaults;
+use Luracast\Restler\Resources;
+/**
+* Cria uma instância do Restler (true = produção cria na pasta public/cache/ as rotas)
+* @var Restler
+*/
+$restler = new Restler(true);
+$app->instance('restful', $restler);
+
+/**
+* Desabilita as rotas automáticas
+* @var boolean
+*/
+Defaults::$smartAutoRouting = false;
+
+/**
+* API baseada em versão
+* /v1
+* @var boolean
+*/
+Defaults::$useUrlBasedVersioning = true;
+
 /**
  * Executa configurações do restler.
  */
-//$app->run();
+$app->run();

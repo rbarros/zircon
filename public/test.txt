@@ -1,0 +1,65 @@
+GET /zircon/customers HTTP/1.1
+Host: localhost
+Cache-Control: no-cache
+
+Return
+[
+    "clientes get "
+]
+
+=======================================
+
+GET /zircon/customers/1 HTTP/1.1
+Host: localhost
+Cache-Control: no-cache
+
+Return
+[
+    "clientes get 1"
+]
+
+=======================================
+
+POST /zircon/customers HTTP/1.1
+Host: localhost
+Cache-Control: no-cache
+
+{"user":"contato@nocriz.com","password":"e10adc3949ba59abbe56e057f20f883e"}
+
+Return
+
+{
+    "clientes post": {
+        "user": "contato@nocriz.com",
+        "password": "e10adc3949ba59abbe56e057f20f883e"
+    }
+}
+
+=======================================
+
+PUT /zircon/customers/1 HTTP/1.1
+Host: localhost
+Cache-Control: no-cache
+
+{"user":"contato@nocriz.com","password":"e10adc3949ba59abbe56e057f20f883e"}
+
+Return
+
+{
+    "clientes put 1": {
+        "user": "contato@nocriz.com",
+        "password": "e10adc3949ba59abbe56e057f20f883e"
+    }
+}
+
+=======================================
+
+DELETE /zircon/customers/1 HTTP/1.1
+Host: localhost
+Cache-Control: no-cache
+
+Return
+
+[
+    "clientes delete 1"
+]

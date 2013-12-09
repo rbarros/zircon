@@ -85,8 +85,9 @@ aliases :
 # 
 # Controllers que serão carregadas no Restler.
 # 
-api : 
- #- Customers
+api :
+ - Customers
+ - Say
  #- Login
  #- Departments
  #- Occupations

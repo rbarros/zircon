@@ -16,10 +16,6 @@ use Zircon\Application\AliasLoader;
 use Zircon\Config\FileLoader;
 use Zircon\Application\ProviderRepository;
 
-use Luracast\Restler\Restler;
-use Luracast\Restler\Defaults;
-use Luracast\Restler\Resources;
-
 use Illuminate\Http\Request;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
@@ -115,15 +111,6 @@ class App extends Container implements HttpKernelInterface, ResponsePreparerInte
      * Armazena instancia da aplicação
      */
     Facade::setFacadeApplication($this);
-
-    /**
-     * Cria uma instância do Restler
-     * @var Restler
-     */
-    /*
-    $restler = new Restler();
-    $this->instance('restler', $restler);
-    */
 
     /**
      * Cria uma instância de Repository "Config" utilizado no
@@ -475,6 +462,48 @@ class App extends Container implements HttpKernelInterface, ResponsePreparerInte
   public function after($callback)
   {
     return $this['router']->after($callback);
+  }
+
+  /**
+   * Executa a aplicação.
+   * @return void
+   */
+  public function run(){
+
+    /**
+     * Recupera a instância da classe Restler
+     * @var object
+     */
+    $r = $this['restful'];
+    if($r) {
+      /**
+       * Define os formatos suportados pela API
+       */
+      $r->setSupportedFormats('JsonFormat', 'XmlFormat','YamlFormat');
+      
+      /**
+       * Define a versão da API
+       */
+      $r->setAPIVersion(self::VERSION);
+      
+      /**
+       * Efetua o carregamento dos controllers da aplicação.
+       */
+      if(is_array($this['config']->get('app.api'))){
+        foreach ($this['config']->get('app.api') as $class) {
+          $r->addAPIClass($class);
+        }
+      }
+      
+      /**
+       * Controle de autorização
+       */
+      //$r->addAuthenticationClass('AccessControl');
+
+      $r->handle();
+    }else{
+      throw new Exception("Não foi possivel carregar o Restler");
+    }
   }
 
   /**
